@@ -1,0 +1,33 @@
+\setlength{\parindent}{1em}
+
+\newcommand{\DUrolestrongemph}[1]{\textbf{\emph{#1}}}
+
+\usepackage{clrscode3e}
+
+\newcommand{\DUroleid}{\id}
+\newcommand{\DUroleproc}{\proc}
+\newcommand{\DUrolecnst}{\const}
+\newcommand{\DUrolefunc}{\func}
+\newcommand{\DUrolekw}{\kw}
+
+\newcommand{\DUrolechap}{\chapter*}
+\newcommand{\DUrolesubsubsec}{\subsubsection*}
+
+\makeatletter
+\renewcommand{\sphinxtableofcontents}{%
+  \begingroup
+    \parskip \z@skip
+    \sphinxtableofcontentshook
+    \tableofcontents
+  \endgroup
+  % before resetting page counter, let's do the right thing.
+  \if@openright\cleardoublepage\else\clearpage\fi%
+}
+\makeatother
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{lem}{Lemma}[chapter]
+\renewcommand\thelem{\thechapter.\arabic{lem}}
+\newtheorem{exer}{Exercise}[section]
