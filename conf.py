@@ -27,7 +27,8 @@ release = '3.0'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx-rtd-theme'
 ]
 
 with open('rst_prolog.rst') as f:
