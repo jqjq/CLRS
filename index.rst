@@ -1,6 +1,4 @@
-==========================
-Introduction to Algorithms
-==========================
+.. include:: README.rst
 
 .. toctree::
 
