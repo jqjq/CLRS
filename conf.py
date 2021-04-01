@@ -2,13 +2,9 @@
 
 # -- Path setup --------------------------------------------------------------
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os
-import sys
-sys.path.insert(0, os.path.abspath('../src'))
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 
@@ -21,20 +17,23 @@ author = 'Thomas H. Cormen, ' \
          'Ronald L. Rivest, ' \
          'Clifford Stein'
 
-# The full version, including alpha/beta/rc tags
 release = '3.0'
 
 # -- General configuration ---------------------------------------------------
 
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx-rtd-theme'
+ 
+exclude_patterns = [
+    'old/*',
+    '.tox/*'
 ]
 
-with open('rst_prolog.rst') as f:
-    RST_PROLOG = f.read()
+# extensions = [
+#     'sphinx.ext.autodoc',
+#     'sphinx-rtd-theme'
+# ]
 
-rst_prolog = RST_PROLOG
+with open('rst_prolog.rst') as f:
+    rst_prolog = f.read()
 
 numfig = True
 
@@ -42,17 +41,17 @@ numfig_format = {
     'figure': 'Figure %s'
 }
 
-numfig_secnum_depth = 2
+# numfig_secnum_depth = 2
 
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_engine = 'xelatex'
 
-latex_logo = 'cover.png'
+# latex_logo = 'cover.png'
 
-latex_docclass = {
-    'manual': 'book'
-}
+# latex_docclass = {
+#     'manual': 'book'
+# }
 
 latex_documents = [(
     'index',
@@ -64,19 +63,24 @@ latex_documents = [(
 
 latex_additional_files = [
     'clrscode3e.sty',
-    'mystyle.sty'
+    'preamble.sty'
 ]
 
 latex_toplevel_sectioning = 'part'
 
 latex_elements = {
     'papersize': 'a4paper',
-    'preamble': r'\usepackage{mystyle}',
-    'tableofcontents': r'''
-\frontmatter
-
-\sphinxtableofcontents
-'''
+    'preamble': r'\usepackage{preamble}'
 }
 
-latex_domain_indices = False
+# latex_elements = {
+#     'papersize': 'a4paper',
+#     'preamble': r'\usepackage{mystyle}',
+#     'tableofcontents': r'''
+# \frontmatter
+
+# \sphinxtableofcontents
+# '''
+# }
+
+# latex_domain_indices = False
