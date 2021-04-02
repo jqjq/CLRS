@@ -23,6 +23,7 @@ release = '3.0'
 
  
 exclude_patterns = [
+    'RST_PROLOG.rst',
     'old/*',
     '.tox/*'
 ]
@@ -41,7 +42,7 @@ numfig_format = {
     'figure': 'Figure %s'
 }
 
-# numfig_secnum_depth = 2
+numfig_secnum_depth = 2
 
 # -- Options for LaTeX output ------------------------------------------------
 
