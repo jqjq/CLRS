@@ -2,3 +2,5 @@
 
 The naive string-matching algorithm
 ===================================
+
+.. subsubsection:: Exercises

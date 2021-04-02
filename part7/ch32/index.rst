@@ -4,18 +4,6 @@
 String Matching
 ***************
 
-.. figure:: img/fig32-1.png
-    :align: right
-    :figwidth: 20em
-    :name: fig32-1
-
-    An example of the string-matching problem, where we want to find all
-    occurrences of the pattern :math:`P=\mathtt{abaa}` in the text
-    :math:`T=\mathtt{abcabaabcabac}`. The pattern occurs only once in the text,
-    at shift :math:`s=3`, which we call a valid shift. A vertical line connects
-    each character of the pattern to its matching character in the text, and
-    all matched characters are shaded.
-
 Text-editing programs frequently need to find all occurrences of a pattern in
 the text. Typically, the text is a document being edited, and the pattern
 searched for is a particular word supplied by the user. Efficient algorithms
@@ -32,6 +20,18 @@ alphabet :math:`\Sigma`. For example, we may have :math:`\Sigma = \{ \mathtt{0,
 1} \}` or :math:`\Sigma = \{ \mathtt{a,b,\ldots,z} \}`. The character arrays
 :math:`P` and :math:`T` are often called :strongemph:`strings` of characters.
 
+.. figure:: img/fig32-1.png
+    :name: fig32-1
+    :scale: 10%
+    :figwidth: 80%
+
+    An example of the string-matching problem, where we want to find all
+    occurrences of the pattern :math:`P=\mathtt{abaa}` in the text
+    :math:`T=\mathtt{abcabaabcabac}`. The pattern occurs only once in the text,
+    at shift :math:`s=3`, which we call a valid shift. A vertical line connects
+    each character of the pattern to its matching character in the text, and
+    all matched characters are shaded.
+
 Referring to :numref:`fig32-1`, we say that pattern :math:`P`
 :strongemph:`occurs with shift` :math:`s` in text :math:`T` (or, equivalently,
 that pattern :math:`P` :strongemph:`occurs beginning at position` :math:`s+1`
@@ -44,8 +44,7 @@ valid shifts with which a given pattern :math:`P` occurs in a given text
 :math:`T`.
 
 .. figure:: img/fig32-2.png
-    :align: right
-    :figwidth: 20em
+    :scale: 30%
     :name: fig32-2
 
     The string-matching algorithms in this chapter and their preprocessing and
@@ -70,7 +69,7 @@ similar, but much cleverer, Knuth-Morris-Pratt (or KMP) algorithm; it has the
 same :math:`\Theta(n)` matching time, and it reduces the preprocessing time to
 only :math:`\Theta(m)`.
 
-.. rubric:: Notation and terminology
+.. subsubsection:: Notation and terminology
 
 We denote by :math:`\Sigma^*` (read “sigma-star”) the set of all finite-length
 strings formed using characters from the alphabet :math:`\Sigma`. In this

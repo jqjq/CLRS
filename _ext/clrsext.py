@@ -1,7 +1,13 @@
-#from docutils import nodes
+from docutils import nodes
 from docutils.parsers.rst.directives.body import Rubric
 
 class Subsubsection(Rubric):
+    pass
+
+class ParagraphHeading(Rubric):
+    pass
+
+class paragraph_heading(nodes.rubric):
     pass
 
 def setup(app):

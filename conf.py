@@ -2,9 +2,10 @@
 
 # -- Path setup --------------------------------------------------------------
 
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('../src'))
+import os
+import sys
+
+sys.path.append(os.path.abspath("./_ext"))
 
 # -- Project information -----------------------------------------------------
 
@@ -21,7 +22,8 @@ release = '3.0'
 
 # -- General configuration ---------------------------------------------------
 
- 
+extensions = ['clrsext']
+
 exclude_patterns = [
     'RST_PROLOG.rst',
     'old/*',
