@@ -1,0 +1,8 @@
+.procname {
+  font-variant: small-caps;
+}
+
+.kw {
+  font-style: normal;
+  font-weight: bold;
+}
