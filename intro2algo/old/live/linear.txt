@@ -1,0 +1,337 @@
+
+  
+  <h2>Chapter 8 Sorting in Linear Time</h2>
+  <h3>8.1 Lower bounds for sorting</h3>
+  <p><strong>Exercise 8.1-1</strong></p>
+  <p>What is the smallest possible depth of a leaf in a decision tree for a comparison sort?</p>
+  <p><em>Answer:</em></p>
+\[
+n-1
+\]
+  <p><strong>Exercise 8.1-2</strong></p>
+  <p>Obtain asymptotically tight bounds on \(\lg(n!)\) without using Stirling's approximation. Instead, evaluate the summation \(\sum_{k=1}^n\lg k\) using techniques from Section A.2.</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{alignat}{4}
+&   & \ \lg(n!) &= \sum_{k=1}^n \lg k \\
+\sum_{k=\lfloor n/2\rfloor+1}^n \lg k &\le& \ \lg(n!) &\le \sum_{k=1}^n \lg n \\
+\frac n 2 \lg \frac n 2 &\le& \ \lg(n!) &\le n\lg n \\
+\frac n 2 \lg \frac n {\sqrt n} &\le& \ \lg(n!) &\le n\lg n \\
+\frac {n\lg n} 4 &\le& \ \lg(n!) &\le n\lg n \\
+\end{alignat}
+\]
+  <p><strong>Exercise 8.1-3</strong></p>
+  <p>Show that there is no comparison sort whose running time is linear for at least half of the \(n!\) inputs of length \(n\). What about a fraction of \(1/n\) of the inputs of length \(n\)? What about a fraction \(1/2^n\)?</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+\frac{n!}2 &\gt 2^n\\
+\frac{n!}n &\gt 2^n\\
+\frac{n!}{2^n} &\gt 2^n\\
+\end{align*}
+\]
+  <p><strong>Exercise 8.1-4</strong></p>
+  <p>Suppose that you are given a sequence of \(n\) elements to sort. The input sequence consists of \(n/k\) subsequences, each containing \(k\) elements. The elements in a given subsequence are all smaller than the elements in the succeeding subsequence and larger than the elements in the preceding subsequence. Thus, all that is needed to sort the whole sequence of length \(n\) is to sort the \(k\) elements in each of the \(n/k\) subsequences. Show an \(\Omega(n\lg k)\) lower bound on the number of comparisons needed to solve this variant of the sorting problem. (<em>Hint</em>: It is not rigorous to simply combine the lower bounds for the individual subsequences.)</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+(k!)^{\frac nk} &\le 2^h\\
+h &\ge \frac n k \lg(k!)\\
+&\ge \frac n k \cdot k\lg k\\
+&=n\lg k
+\end{align*}
+\]
+  <h3>8.2 Counting sort</h3>
+  <p><strong>Exercise 8.2-1</strong></p>
+  <p>Using Figure 8.2 as a model, illustrate the operation of \(\text{CountingSort}\) on the array \(A=\langle 6,0,2,0,1,3,4,6,1,3,2\rangle\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{array}{c|ccccccccccccccccccc}
+C & 2 & 2 & 2 & 2 & 1 & 0 & 2\\
+\hline
+C & 2 & 4 & 6 & 8 & 9 & 9 & 11\\
+B & \text N & \text N & \text N & \text N & \text N & \text N & \text N & \text N & \text N & \text N & \text N\\
+\hline
+C & 2 & 4 & 5 & 8 & 9 & 9 & 11\\
+B & \text N & \text N & \text N & \text N & \text N & 2 & \text N & \text N & \text N & \text N & \text N\\
+\hline
+C & 2 & 4 & 5 & 7 & 9 & 9 & 11\\
+B & \text N & \text N & \text N & \text N & \text N & 2 & \text N & 3 & \text N & \text N & \text N\\
+\hline
+C & 2 & 3 & 5 & 7 & 9 & 9 & 11\\
+B & \text N & \text N & \text N & 1 & \text N & 2 & \text N & 3 & \text N & \text N & \text N\\
+\hline
+C & 2 & 3 & 5 & 7 & 9 & 9 & 10\\
+B & \text N & \text N & \text N & 1 & \text N & 2 & \text N & 3 & \text N & \text N & 6\\
+\hline
+C & 2 & 3 & 5 & 7 & 8 & 9 & 10\\
+B & \text N & \text N & \text N & 1 & \text N & 2 & \text N & 3 & 4 & \text N & 6\\
+\hline
+C & 2 & 3 & 5 & 6 & 8 & 9 & 10\\
+B & \text N & \text N & \text N & 1 & \text N & 2 & 3 & 3 & 4 & \text N & 6\\
+\hline
+C & 2 & 2 & 5 & 6 & 8 & 9 & 10\\
+B & \text N & \text N & 1 & 1 & \text N & 2 & 3 & 3 & 4 & \text N & 6\\
+\hline
+C & 1 & 2 & 5 & 6 & 8 & 9 & 10\\
+B & \text N & 0 & 1 & 1 & \text N & 2 & 3 & 3 & 4 & \text N & 6\\
+\hline
+C & 1 & 2 & 4 & 6 & 8 & 9 & 10\\
+B & \text N & 0 & 1 & 1 & 2 & 2 & 3 & 3 & 4 & \text N & 6\\
+\hline
+C & 0 & 2 & 4 & 6 & 8 & 9 & 10\\
+B & 0 & 0 & 1 & 1 & 2 & 2 & 3 & 3 & 4 & \text N & 6\\
+\hline
+C & 0 & 2 & 4 & 6 & 8 & 9 & 9\\
+B & 0 & 0 & 1 & 1 & 2 & 2 & 3 & 3 & 4 & 6 & 6
+\end{array}
+\]
+  <p><strong>Exercise 8.2-2</strong></p>
+  <p>Prove that \(\text{CountingSort}\) is stable.</p>
+  <p><strong>Exercise 8.2-3</strong></p>
+  <p>Suppose that we were to rewrite the \(\textbf{for}\) loop header in line 10 of the \(\text{CountingSort}\) as<br>
+    \(10\quad\textbf{for }j=1\textbf{ to }A.length\)<br>
+    Show that the algorithm still works properly. Is the modified algorithm stable?</p>
+  <p><strong>Exercise 8.2-4</strong></p>
+  <p>Describe an algorithm that, given \(n\) integers in the range \(0\) to \(k\), preprocesses its input and then answers any query about how many of the \(n\) integers fall into a range \([a..b]\) in \(O(1)\) time. Your algorithm should use \(\Theta(n+k)\) preprocessing time.</p>
+  <h3>8.3 Radix sort</h3>
+  <p><strong>Exercise 8.3-1</strong></p>
+  <p>Using Figure 8.3 as a model, illustrate the operation of \(\text{RadixSort}\) on the following list of English words: \(\text{COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG, TEA, NOW, FOX}\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{array}{}
+\text{COW} & \text{DOG} & \text{SEA} & \text{RUG} & \text{ROW} & \text{MOB} & \text{BOX} & \text{TAB} & \text{BAR} & \text{EAR} & \text{TAR} & \text{DIG} & \text{BIG} & \text{TEA} & \text{NOW} & \text{FOX}\\
+\text{SEA} & \text{TEA} & \text{MOB} & \text{TAB} & \text{DOG} & \text{RUG} & \text{DIG} & \text{BIG} & \text{BAR} & \text{EAR} & \text{TAR} & \text{COW} & \text{ROW} & \text{NOW} & \text{BOX} & \text{FOX}\\
+\text{TAB} & \text{BAR} & \text{EAR} & \text{TAR} & \text{SEA} & \text{TEA} & \text{DIG} & \text{BIG} & \text{MOB} & \text{DOG} & \text{COW} & \text{ROW} & \text{NOW} & \text{BOX} & \text{FOX} & \text{RUG}\\
+\text{BAR} & \text{BIG} & \text{BOX} & \text{COW} & \text{DIG} & \text{DOG} & \text{EAR} & \text{FOX} & \text{MOB} & \text{NOW} & \text{ROW} & \text{RUG} & \text{SEA} & \text{TAB} & \text{TAR} & \text{TEA}
+\end{array}
+\]
+  <p><strong>Exercise 8.3-2</strong></p>
+  <p>Which of the following sorting algorithms are stable: insertion sort, merge sort, heapsort, and quicksort? Give a simple scheme that makes any sorting algorithm stable. How much additional time and space does your scheme entail?</p>
+  <p><em>Answer:</em></p>
+  <p>insertion sort and merge sort are stable; heapsort and quicksort are not.</p>
+  <p><strong>Exercise 8.3-3</strong></p>
+  <p>Use induction to prove that radix sort works. Where does your proof need the assumption that the intermediate sort is stable?</p>
+  <p><strong>Exercise 8.3-4</strong></p>
+  <p>Show how to sort \(n\) integers in the range \(0\) to \(n^3-1\) in \(O(n)\) time.</p>
+  <p><em>Answer:</em></p>
+  <p>insertion sort and merge sort are stable; heapsort and quicksort are not.</p>
+  <p><strong>Exercise 8.3-5 &#9733;</strong></p>
+  <p>In the first card-sorting algorithm in this section, exactly how many sorting passes are needed to sort \(d\)-digit decimal numbers in the worst case? How many piles of cards would an operator need to keep track of in the worst case?</p>
+  <p><em>Answer:</em></p>
+\[
+d\\10
+\]
+  <h3>8.4 Bucket sort</h3>
+  <p><strong>Exercise 8.4-1</strong></p>
+  <p>Using Figure 8.4 as a model, illustrate the operation of \(\text{BucketSort}\) on the array \(A=\langle .79,.13,.16,.64,.39,.20,.89,.53,.71,.42\rangle\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{array}{}
+0\\
+1& 0.13 & 0.16\\
+2& 0.2\\
+3& 0.39\\
+4& 0.42\\
+5& 0.53\\
+6& 0.64\\
+7& 0.71&0.79\\
+8& 0.89\\
+9
+\end{array}
+\]
+  <p><strong>Exercise 8.4-2</strong></p>
+  <p>Explain why the worst-case running time for bucket sort is \(\Theta(n^2)\). What simple change to the algorithm preserves its linear average-case running time and makes its worst-case running time \(O(n \lg n)\)?</p>
+  <p><strong>Exercise 8.4-3</strong></p>
+  <p>Let \(X\) be a random variable that is equal to the number of heads in two flips of a fair coin. What is \(\text E[X^2]\)? What is \(\text E^2[X]\)?</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+0^2 \cdot \frac 1 4 + 1^2 \cdot \frac 1 2 + 2^2 \cdot \frac 1 4 &= \frac 3 2\\
+\left(0 \cdot \frac 1 4 + 1 \cdot \frac 1 2 + 2 \cdot \frac 1 4\right)^2 &= 1
+\end{align*}
+\]
+  <p><strong>Exercise 8.4-4 &#9733;</strong></p>
+  <p>We are given \(n\) points in the unit circle, \(p_i=(x_i,y_i)\), such that \(0\lt x_i^2+y_i^2 \le 1\) for \(i=1,2,\dots,n\). Suppose that the points are uniformly distributed; that is, the probability of finding a point in any region of the circle is proportional to the area of that region. Design an algorithm with an average-case running time of \(\Theta(n)\) to sort the \(n\) points by their distances \(d_i=\sqrt{x_i^2+y_i^2}\) from the origin. (<em>Hint</em>: Design the bucket sizes in \(\text{BucketSort}\) to reflect the uniform distribution of the points in the unit circle.)</p>
+  <p><strong>Exercise 8.4-5 &#9733;</strong></p>
+  <p>A <strong><em>probability distribution function</em></strong> \(P(x)\) for a random variable \(X\) is defined by \(P(x)=\Pr\{X\le x\}\). Suppose that we draw a list of \(n\) random variables \(X_1,X_2,\dots,X_n\) from a continuous probability distribution function \(P\) that is computable in \(O(1)\) time. Give an algorithm that sorts these numbers in linear average-case time.</p>
+  <h3>Problems</h3>
+  <p><strong>Problem 8-1 Probabilistic lower bounds on comparison sorting</strong></p>
+  <p>In this problem, we prove a probabilistic \(\Omega(n\lg n)\) lower bound on the running time of any deterministic or randomized comparison sort on \(n\) distinct input elements. We begin by examining a deterministic comparison sort \(A\) with decision tree \(T_A\). We assume that every permutation of \(A\)'s inputs is equally likely.</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Suppose that each leaf of \(T_A\) is labeled with the probability that it is reached given a random input. Prove that exactly \(n!\) leaves are labeled \(1/n!\) and that the rest are labeled \(0\).</li>
+    <li>Let \(D(T)\) denote the external path length of a decision tree \(T\); that is, \(D(T)\) is the sum of the depths of all the leaves of \(T\). Let \(T\) be a decision tree with \(k\gt 1\) leaves, and let \(LT\) and \(RT\) be the left and right subtrees of \(T\). Show that \(D(T)=D(LT)+D(RT)+k\).</li>
+    <li>Let \(d(k)\) be the minimum value of \(D(T)\) over all decision trees \(T\) with \(k\gt 1\) leaves. Show that \(d(k)=\min_{1\le i\le k-1} \{d(i)+d(k-i)+k\}\). (<em>Hint</em>: Consider a decision tree \(T\) with \(k\) leaves that achieves the minimum. Let \(i_0\) be the number of leaves in \(LT\) and \(k-i_0\) the number of leaves in \(RT\).)</li>
+    <li>Prove that for a given value of \(k\gt 1\) and \(i\) in the range \(1\le i\le k-1\), the function \(i\lg i+(k-i)\lg(k-i)\) is minimized at \(i=k/2\). Conclude that \(d(k)=k\lg k\).</li>
+    <li>Prove that \(D(T_A)=\Omega(n!\lg(n!))\), and conclude that the average-case time to sort \(n\) elements is \(\Omega(n\lg n)\).</li>
+  </ol>
+  <p>Now, consider a <em>randomized</em> comparison sort \(B\). We can extend the decision-tree model to handle randomization by incorporating two kinds of nodes: ordinary comparison nodes and "randomization" nodes. A randomization node models a random choice of the form \(\text{Random}(1,r)\) made by algorithm \(B\); the node has \(r\) children, each of which is equally likely to be chosen during an execution of the algorithm.</p>
+  <ol style="list-style-type: lower-alpha;" start=6>
+    <li>Show that for any randomized comparison sort \(B\), there exists a deterministic comparison sort \(A\) whose expected number of comparisons is no more than those made by \(B\).</li>
+  </ol>
+  <p><strong>Problem 8-2 Sorting in place in linear time</strong></p>
+  <p>Suppose that we have an array of \(n\) data records to sort and that the key of each record has the value \(0\) or \(1\). An algorithm for sorting such a set of records might possess some subset of the following three desirable characteristics:</p>
+  <ol>
+    <li>The algorithm runs in \(O(n)\) time.</li>
+    <li>The algorithm is stable.</li>
+    <li>The algorithm sorts in place, using no more than a constant amount of storage space in addition to the original array.</li>
+  </ol>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Give an algorithm that satisfies criteria 1 and 2 above.</li>
+    <li>Give an algorithm that satisfies criteria 1 and 3 above.</li>
+    <li>Give an algorithm that satisfies criteria 2 and 3 above.</li>
+    <li>Can you use any of your sorting algorithms from parts (a)–(c) as the sorting method used in line 2 of \(\text{RadixSort}\), so that \(\text{RadixSort}\) sorts \(n\) records with \(b\)-bit keys in \(O(bn)\) time? Explain how or why not.</li>
+    <li>Suppose that the \(n\) records have keys in the range from \(1\) to \(k\). Show how to modify counting sort so that it sorts the records in place in \(O(n+k)\) time. You may use \(O(k)\) storage outside the input array. Is your algorithm stable? (<em>Hint</em>: How would you do it for \(k=3\)?)</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a. counting sort</p>
+  <p>b. hoare partition</p>
+  <p>c. insertion sort</p>
+  <p>d. (a)</p>
+  <p>e. counting sort</p>
+  <p><strong>Problem 8-3 Sorting variable-length items</strong></p>
+  <ol>
+    <li>You are given an array of integers, where different integers may have different numbers of digits, but the total number of digits over all the integers in the array is \(n\). Show how to sort the array in \(O(n)\) time.</li>
+    <li>You are given an array of strings, where different strings may have different numbers of characters, but the total number of characters over all the strings is \(n\). Show how to sort the strings in \(O(n)\) time.<br>
+      (Note that the desired order here is the standard alphabetical order; for example, \(\mathtt{a\lt ab\lt b}\).)</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a. bucket sort + counting sort</p>
+  <p>b. reverse every string + radix sort + reverse back</p>
+  <p><strong>Problem 8-4 Water jugs</strong></p>
+  <p>Suppose that you are given \(n\) red and \(n\) blue water jugs, all of different shapes and sizes. All red jugs hold different amounts of water, as do the blue ones. Moreover, for every red jug, there is a blue jug that holds the same amount of water, and vice versa.</p>
+  <p>Your task is to find a grouping of the jugs into pairs of red and blue jugs that hold the same amount of water. To do so, you may perform the following operation: pick a pair of jugs in which one is red and one is blue, fill the red jug with water, and then pour the water into the blue jug. This operation will tell you whether the red or the blue jug can hold more water, or that they have the same volume. Assume that such a comparison takes one time unit. Your goal is to find an algorithm that makes a minimum number of comparisons to determine the grouping. Remember that you may not directly compare two red jugs or two blue jugs.</p>
+  <ol  style="list-style-type: lower-alpha;">
+    <li>Describe a deterministic algorithm that uses \(\Theta(n^2)\) comparisons to group the jugs into pairs.</li>
+    <li>Prove a lower bound of \(\Omega(n\lg n)\) for the number of comparisons that an algorithm solving this problem must make.</li>
+    <li>Give a randomized algorithm whose expected number of comparisons is \(O(n\lg n)\), and prove that this bound is correct. What is the worst-case number of comparisons for your algorithm?</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>c. quicksort</p>
+  <p><strong>Problem 8-5 Average sorting</strong></p>
+  <p>Suppose that, instead of sorting an array, we just require that the elements increase on average. More precisely, we call an \(n\)-element array \(A\) <strong><em>\(k\)-sorted</em></strong> if, for all \(i=1,2,\dots,n-k\), the following holds:</p>
+  <p>\(\dfrac{\sum_{j=i}^{i+k-1}A[j]}k\le \dfrac{\sum_{j=i+1}^{i+k}A[j]}k\).</p>
+  <ol  style="list-style-type: lower-alpha;">
+    <li>What does it mean for an array to be \(1\)-sorted?</li>
+    <li>Give a permutation of the numbers \(1,2,\dots,10\) that is \(2\)-sorted, but not sorted.</li>
+    <li>Prove that an \(n\)-element array is \(k\)-sorted if and only if \(A[i]\le A[i+k]\) for all \(i=1,2,\dots,n-k\).</li>
+    <li>Give an algorithm that \(k\)-sorts an \(n\)-element array in \(O(n\lg(n/k))\) time.</li>
+  </ol>
+  <p>We can also show a lower bound on the time to produce a \(k\)-sorted array, when \(k\) is a constant.</p>
+  <ol  style="list-style-type: lower-alpha;" start=5>
+    <li>Show that we can sort a \(k\)-sorted array of length \(n\) in \(O(n\lg k)\) time. (<em>Hint</em>: Use the solution to Exercise 6.5-9.)</li>
+    <li>Show that when \(k\) is a constant, \(k\)-sorting an \(n\)-element array requires \(O(n\lg n)\) time. (<em>Hint</em>: Use the solution to the previous part along with the lower bound on comparison sorts.)</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>c.</p>
+\[
+\begin{align*}
+\dfrac{\sum_{j=i}^{i+k-1}A[j]}k&\le \dfrac{\sum_{j=i+1}^{i+k}A[j]}k\\
+\sum_{j=i}^{i+k-1}A[j]&\le \sum_{j=i+1}^{i+k}A[j]\\
+A[i]+\sum_{j=i+1}^{i+k-1}A[j]&\le \sum_{j=i+1}^{i+k-1}A[j]+A[i+k]\\
+A[i]&\le A[i+k]
+\end{align*}
+\]
+  <p><strong>Problem 8-6 Lower bound on merging sorted lists</strong></p>
+  <p>The problem of merging two sorted lists arises frequently. We have seen a procedure for it as the subroutine \(\text{Merge}\) in Section 2.3.1. In this problem, we will prove a lower bound of \(2n-1\) on the worst-case number of comparisons required to merge two sorted lists, each containing \(n\) items.</p>
+  <p>First we will show a lower bound of \(2n-o(n)\) comparisons by using a decision tree.</p>
+  <ol  style="list-style-type: lower-alpha;">
+    <li>Given \(2n\) numbers, compute the number of possible ways to divide them into two sorted lists, each with \(n\) numbers.</li>
+    <li>Using a decision tree and your answer to part (a), show that any algorithm that correctly merges two sorted lists must perform at least \(2n-o(n)\) comparisons.</li>
+  </ol>
+  <p>Now we will show a slightly tighter \(2n-1\) bound.</p>
+  <ol  style="list-style-type: lower-alpha;" start=3>
+    <li>Show that if two elements are consecutive in the sorted order and from different
+lists, then they must be compared.</li>
+    <li>Use your answer to the previous part to show a lower bound of \(2n-1\) comparisons
+for merging two sorted lists.
+</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a. \(\begin{pmatrix}2n\\n\end{pmatrix}\)</p>
+  <p>b.</p>
+\[
+\begin{align*}
+\lg\left(\begin{pmatrix}2n\\n\end{pmatrix}\right)
+&= \lg\left(\frac {2^{2n}}{\sqrt{\pi n}}\left(1+O\left(\frac 1 n\right)\right)\right)\\
+&=\lg(2^{2n})-\left(\lg(\sqrt{\pi n})-\lg\left(1+O\left(\frac 1 n\right)\right)\right)\\
+&=2n-o(n)\\
+\end{align*}
+\]
+  <p><strong>Problem 8-7 The 0-1 sorting lemma and columnsort</strong></p>
+  <p>A compare-exchange operation on two array elements \(A[i]\) and \(A[j]\), where \(i\lt j\), has the form</p>
+  <pre>def compare_exchange(a, i, j):
+    if a[i] > a[j]:
+        a[i], a[j] = a[j], a[i]</pre>
+  <p>After the compare-exchange operation, we know that \(A[i]\le A[j]\).</p>
+  <p>An <strong><em>oblivious compare-exchange algorithm</em></strong> operates solely by a sequence of prespecified compare-exchange operations. The indices of the positions compared in the sequence must be determined in advance, and although they can depend on the number of elements being sorted, they cannot depend on the values being sorted, nor can they depend on the result of any prior compare-exchange operation. For example, here is insertion sort expressed as an oblivious compare-exchange algorithm:</p>
+  <pre>def insertion_sort(a):
+    for j in range(1, len(a)):
+        for i in range(j - 1, -1, -1):
+            compare_exchange(a, i, i + 1)</pre>
+  <p>The <strong><em>0-1 sorting lemma</em></strong> provides a powerful way to prove that an oblivious compare-exchange algorithm produces a sorted result. It states that if an oblivious compare-exchange algorithm correctly sorts all input sequences consisting of only \(0\)s and \(1\)s, then it correctly sorts all inputs containing arbitrary values.</p>
+  <p>You will prove the 0-1 sorting lemma by proving its contrapositive: if an oblivious compare-exchange algorithm fails to sort an input containing arbitrary values, then it fails to sort some 0-1 input. Assume that an oblivious compare-exchange algorithm \(X\) fails to correctly sort the array \(A[1..n]\). Let \(A[p]\) be the smallest value in \(A\) that algorithm \(X\) puts into the wrong location, and let \(A[q]\) be the value that algorithm \(X\) moves to the location into which \(A[p]\) should have gone. Define an array \(B[1..n]\) of \(0\)s and \(1\)s as follows:</p>
+  <p>\(
+B[i]=\left\{\begin{array}{}0&\text{if }A[i]\le A[p],\\
+1&\text{if }A[i]\gt A[p].\end{array}\right.
+\)</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Argue that \(A[q]\gt A[p]\), so that \(B[p]=0\) and \(B[q]=1\).</li>
+    <li>To complete the proof of the 0-1 sorting lemma, prove that algorithm \(X\) fails to sort array \(B\) correctly.</li>
+  </ol>
+  <p>Now you will use the 0-1 sorting lemma to prove that a particular sorting algorithm works correctly. The algorithm, <strong><em>columnsort</em></strong>, works on a rectangular array of \(n\) elements. The array has \(r\) rows and \(s\) columns (so that \(n=rs\)), subject to three restrictions:</p>
+  <ul>
+    <li>\(r\) must be even,</li>
+    <li>\(s\) must be a divisor of \(r\), and</li>
+    <li>\(r\ge 2s^2\).</li>
+  </ul>
+  <p>When columnsort completes, the array is sorted in <strong><em>column-major order</em></strong>: reading down the columns, from left to right, the elements monotonically increase.</p>
+  <p>Columnsort operates in eight steps, regardless of the value of \(n\). The odd steps are all the same: sort each column individually. Each even step is a fixed permutation. Here are the steps:</p>
+  <ol>
+    <li>Sort each column.</li>
+    <li>Transpose the array, but reshape it back to \(r\) rows and \(s\) columns. In other words, turn the leftmost column into the top \(r/s\) rows, in order; turn the next column into the next \(r/s\) rows, in order; and so on.</li>
+    <li>Sort each column.</li>
+    <li>Perform the inverse of the permutation performed in step 2</li>
+    <li>Sort each column.</li>
+    <li>Shift the top half of each column into the bottom half of the same column, and
+shift the bottom half of each column into the top half of the next column to the
+right. Leave the top half of the leftmost column empty. Shift the bottom half
+of the last column into the top half of a new rightmost column, and leave the
+bottom half of this new column empty.</li>
+    <li>Sort each column.</li>
+    <li>Perform the inverse of the permutation performed in step 6.</li>
+  </ol>
+  <p>Figure 8.5 shows an example of the steps of columnsort with \(r=6\) and \(s=3\). (Even though this example violates the requirement that \(r\ge 2s^2\), it happens to work.)</p>
+  <table style="width: 100%;">
+    <tbody>
+      <tr>
+        <td style="text-align: center;">\(\begin{array}{}10&14&5\\8&7&17\\12&1&6\\16&9&11\\4&15&2\\18&3&13\end{array}\)<br>(a)</td>
+        <td style="text-align: center;">\(\begin{array}{}4&1&2\\8&3&5\\10&7&6\\12&9&11\\16&14&13\\18&15&17\end{array}\)<br>(b)</td>
+        <td style="text-align: center;">\(\begin{array}{}4 & 8 & 10\\12 & 16 & 18\\1 & 3 & 7\\9 & 14 & 15\\2 & 5 & 6\\11 & 13 & 17\end{array}\)<br>(c)</td>
+        <td style="text-align: center;">\(\begin{array}{}1 & 3 & 6\\2 & 5 & 7\\4 & 8 & 10\\9 & 13 & 15\\11 & 14 & 17\\12 & 16 & 18\end{array}\)<br>(d)</td>
+        <td style="text-align: center;">\(\begin{array}{}1 & 4 & 11\\3 & 8 & 14\\6 & 10 & 17\\2 & 9 & 12\\5 & 13 & 16\\7 & 15 & 18\end{array}\)<br>(e)</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">\(\begin{array}{}1 & 4 & 11\\2 & 8 & 12\\3 & 9 & 14\\5 & 10 & 16\\6 & 13 & 17\\7 & 15 & 18\end{array}\)<br>(f)</td>
+        <td style="text-align: center;">\(\begin{array}{}&5 & 10 & 16\\&6 & 13 & 17\\&7 & 15 & 18\\1 & 4 & 11\\2 & 8 & 12\\3 & 9 & 14\end{array}\)<br>(g)</td>
+        <td style="text-align: center;">\(\begin{array}{}&4 & 10 & 16\\&5 & 11 & 17\\&6 & 12 & 18\\1 & 7 & 13\\2 & 8 & 14\\3 & 9 & 15\end{array}\)<br>(h)</td>
+        <td style="text-align: center;">\(\begin{array}{}1 & 7 & 13\\2 & 8 & 14\\3 & 9 & 15\\4 & 10 & 16\\5 & 11 & 17\\6 & 12 & 18\end{array}\)<br>(i)</td>
+      </tr>
+    </tbody>
+    <caption style="text-align: left; caption-side:bottom; font-size: small"><strong>Figure 8.5</strong> The steps of columnsort. <strong>(a)</strong> The input array with \(6\) rows and \(3\) columns. <strong>(b)</strong> After sorting each column in step 1. <strong>(c)</strong> After transposing and reshaping in step 2. <strong>(d)</strong> After sorting each column in step 3. <strong>(e)</strong> After performing step 4, which inverts the permutation from step 2. <strong>(f)</strong> After sorting each column in step 5. <strong>(g)</strong> After shifting by half a column in step 6. <strong>(h)</strong> After sorting each column in step 7. <strong>(i)</strong> After performing step 8, which inverts the permutation from step 6. The array is now sorted in column-major order.</caption>
+  </table>
+  <ol style="list-style-type: lower-alpha;" start=3>
+    <li>Argue that we can treat columnsort as an oblivious compare-exchange algorithm, even if we do not know what sorting method the odd steps use.</li>
+  </ol>
+  <p>Although it might seem hard to believe that columnsort actually sorts, you will use the 0-1 sorting lemma to prove that it does. The 0-1 sorting lemma applies because we can treat columnsort as an oblivious compare-exchange algorithm. A couple of definitions will help you apply the 0-1 sorting lemma. We say that an area of an array is <strong><em>clean</em></strong> if we know that it contains either all \(0\)s or all \(1\)s. Otherwise, the area might contain mixed \(0\)s and \(1\)s, and it is <strong><em>dirty</em></strong>. From here on, assume that the input array contains only \(0\)s and \(1\)s, and that we can treat it as an array with \(r\) rows and \(s\) columns.</p>
+  <ol style="list-style-type: lower-alpha;" start=4>
+    <li>Prove that after steps 1–3, the array consists of some clean rows of \(0\)s at the top, some clean rows of \(1\)s at the bottom, and at most \(s\) dirty rows between them.</li>
+    <li>Prove that after step 4, the array, read in column-major order, starts with a clean
+area of \(0\)s, ends with a clean area of \(1\)s, and has a dirty area of at most \(s^2\) elements in the middle.</li>
+    <li>Prove that steps 5–8 produce a fully sorted 0-1 output. Conclude that columnsort correctly sorts all inputs containing arbitrary values.</li>
+    <li>Now suppose that \(s\) does not divide \(r\). Prove that after steps 1–3, the array consists of some clean rows of \(0\)s at the top, some clean rows of \(1\)s at the bottom, and at most \(2s-1\) dirty rows between them. How large must \(r\) be, compared with \(s\), for columnsort to correctly sort when \(s\) does not divide \(r\)?</li>
+    <li>Suggest a simple change to step 1 that allows us to maintain the requirement that \(r\ge2s^2\) even when \(s\) does not divide \(r\), and prove that with your change, columnsort correctly sorts.</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>g. \(2s^2-2s\)</p>
+

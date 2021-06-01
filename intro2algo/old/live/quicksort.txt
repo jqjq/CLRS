@@ -1,0 +1,287 @@
+
+  
+  <a href="insertion_sort.m">insertion_sort.m</a>
+  
+  <p><strong>Exercise 7.1-1</strong></p>
+  <p>Using Figure 7.1 as a model, illustrate the operation of \(\text{Partition}\) on the array \(A=\langle 13,19,9,5,12,8,7,4,21,2,6,11\rangle\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{array}{}
+13 & 19 & 9 & 5 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+13 & 19 & 9 & 5 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+13 & 19 & 9 & 5 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+9 & 19 & 13 & 5 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+9 & 5 & 13 & 19 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+9 & 5 & 13 & 19 & 12 & 8 & 7 & 4 & 21 & 2 & 6 & 11\\
+9 & 5 & 8 & 19 & 12 & 13 & 7 & 4 & 21 & 2 & 6 & 11\\
+9 & 5 & 8 & 7 & 12 & 13 & 19 & 4 & 21 & 2 & 6 & 11\\
+9 & 5 & 8 & 7 & 4 & 13 & 19 & 12 & 21 & 2 & 6 & 11\\
+9 & 5 & 8 & 7 & 4 & 13 & 19 & 12 & 21 & 2 & 6 & 11\\
+9 & 5 & 8 & 7 & 4 & 2 & 19 & 12 & 21 & 13 & 6 & 11\\
+9 & 5 & 8 & 7 & 4 & 2 & 6 & 12 & 21 & 13 & 19 & 11\\
+9 & 5 & 8 & 7 & 4 & 2 & 6 & 11 & 21 & 13 & 19 & 12
+\end{array}
+\]
+  <p><strong>Exercise 7.1-2</strong></p>
+  <p>What value of \(q\) does \(\text{Partition}\) return when all elements in the array \(A[p..r]\) have the same value? Modify \(\text{Partition}\) so that \(q=\lfloor(p+r)/2\rfloor\) when all elements in the array \(A[p..r]\) have the same value.</p>
+  <p><em>Answer:</em></p>
+\[r\]
+  <p><strong>Exercise 7.1-3</strong></p>
+  <p>Give a brief argument that the running time of \(\text{Partition}\) on a subarray of size \(n\) is \(\Theta(n)\).</p>
+  <p><strong>Exercise 7.1-4</strong></p>
+  <p>How would you modify \(\text{Quicksort}\) to sort into nonincreasing order?</p>
+  <h3>7.2 Performance of quicksort</h3>
+  <p><strong>Exercise 7.2-1</strong></p>
+  <p>Use the substitution method to prove that the recurrence \(T(n)=T(n-1)+\Theta(n)\) has the solution \(T(n)=\Theta(n^2)\), as claimed at the beginning of Section 7.2.</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{alignat*}{4}
+& &T(n)&=T(n-1)+\Theta(n)\\
+c_1(n-1)^2+c_2n &\le&\ T(n)&\le c_3(n-1)^2+c_4n\\
+c_1n^2+(c_2-2c_1)n+c_1 &\le&\ T(n)&\le c_3n^2+(c_4-2c_3)n+c_3\\
+c_1n^2 &\le&\ T(n)&\le c_3n^2 \qquad(c_1\lt \frac {c_2}2,c_3\gt \frac {c_4}2,n \ge \frac {c_3}{2c_3-c_4})
+\end{alignat*}
+\]
+  <p><strong>Exercise 7.2-2</strong></p>
+  <p>What is the running time of \(\text{Quicksort}\) when all elements of array \(A\) have the same value?</p>
+  <p><em>Answer:</em></p>
+\[\Theta(n^2)\]
+  <p><strong>Exercise 7.2-3</strong></p>
+  <p>Show that the running time of \(\text{Quicksort}\) is \(\Theta(n^2)\) when the array A contains distinct elements and is sorted in decreasing order.</p>
+  <p><strong>Exercise 7.2-4</strong></p>
+  <p>Banks often record transactions on an account in order of the times of the transactions, but many people like to receive their bank statements with checks listed in order by check number. People usually write checks in order by check number, and merchants usually cash them with reasonable dispatch. The problem of converting time-of-transaction ordering to check-number ordering is therefore the problem of sorting almost-sorted input. Argue that the procedure \(\text{InsertionSort}\) would tend to beat the procedure \(\text{Quicksort}\) on this problem.</p>
+  <p><strong>Exercise 7.2-5</strong></p>
+  <p>Suppose that the splits at every level of quicksort are in the proportion \(1-\alpha\) to \(\alpha\), where \(0\lt\alpha \le 1/2\) is a constant. Show that the minimum depth of a leaf in the recursion tree is approximately \(-\lg n/\lg\alpha\) and the maximum depth is approximately \(-\lg n/\lg(1-\alpha)\). (Don't worry about integer round-off.)</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+n \left(\frac 1 \alpha\right)^{h_1}&=1\\
+h_1&=-\frac {\lg n}{\lg\alpha}\\
+\\
+n \left(\frac 1 {1-\alpha}\right)^{h_2}&=1\\
+h_2&=-\frac {\lg n}{\lg(1-\alpha)}\\
+\end{align*}
+\]
+  <p><strong>Exercise 7.2-6 &#9733;</strong></p>
+  <p>Argue that for any constant \(0\lt\alpha \le 1/2\), the probability is approximately \(1-2\alpha\) that on a random input array, \(\text{Partition}\) produces a split more balanced than \(1-\alpha\) to \(\alpha\).</p>
+  <h3>7.3 A randomized version of quicksort</h3>
+  <p><strong>Exercise 7.3-1</strong></p>
+  <p>Why do we analyze the expected running time of a randomized algorithm and not its worst-case running time?</p>
+  <p><strong>Exercise 7.3-2</strong></p>
+  <p>When \(\text{RandomizedQuicksort}\) runs, how many calls are made to the random-number generator \(\text{Random}\) in the worst case? How about in the best case? Give your answer in terms of \(\Theta\)-notation.</p>
+  <p><em>Answer:</em></p>
+\[\Theta(n)\]
+  <h3>7.4 Analysis of quicksort</h3>
+  <p><strong>Exercise 7.4-1</strong></p>
+  <p>Show that in the recurrence</p>
+  <p>\(T(n)=\max\limits_{0\le q\le n-1}(T(q)+T(n-q-1))+\Theta(n)\),</p>
+  <p>\(T(n)=\Omega(n^2)\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+T(n)&\ge \max_{0\le q\le n-1}(cq^2+c(n-q-1)^2)+\Theta(n)\\
+&= c\cdot\max_{0\le q\le n-1}(q^2+(n-q-1)^2)+\Theta(n)\\
+&= cn^2-c(2n-1)+\Theta(n)\\
+&\ge cn^2\\
+\end{align*}
+\]
+  <p><strong>Exercise 7.4-2</strong></p>
+  <p>Show that quicksort's best-case running time is \(\Omega(n\lg n)\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+T(n)&=\min_{0\le q\le n-1}(T(q)+T(n-q-1))+\Theta(n)\\
+&\ge \min_{0\le q\le n-1}(cq\lg q+c(n-q-1)\lg (n-q-1))+\Theta(n)\\
+&= c\cdot\min_{0\le q\le n-1}(q\lg q+(n-q-1)\lg (n-q-1))+\Theta(n)\\
+&= c(n-1)\lg{\frac{n-1}2}+\Theta(n)\\
+&\gt c(n-1)\lg{\frac n4}+\Theta(n)\qquad(n \gt 2)\\
+&= cn\lg n-c(2n+\lg n-2)+\Theta(n)\\
+&\ge cn\lg n\\
+\end{align*}
+\]
+  <p><strong>Exercise 7.4-3</strong></p>
+  <p>Show that the expression \(q^2+(n-q-1)^2\) achieves a maximum over \(q=0,1,\dots,n-1\) when \(q=0\) or \(q=n-1\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+f(q)&=q^2+(n-q-1)^2\\
+f'(q)&=4q-2n+2\\
+f'(q)&\lt 0, \ q\lt \frac {n-1}2\\
+f'(q)&\gt 0, \ q\gt \frac {n-1}2\\
+\end{align*}
+\]
+  <p><strong>Exercise 7.4-4</strong></p>
+  <p>Show that \(\text{RandomizedQuicksort}\)'s expected running time is \(\Omega(n\lg n)\).</p>
+  <p><em>Answer:</em></p>
+\[
+\begin{align*}
+\text E[X]&=\sum_{i=1}^{n-1}\sum_{k=1}^{n-i}\frac 2{k+1}\\
+&\ge \sum_{i=1}^{n-1}\sum_{k=1}^{n-i}\frac 2{k+k}\\
+&= \sum_{i=1}^{n-1}\sum_{k=1}^{n-i}\frac 1k\\
+&\gt \sum_{i=1}^{n-1}\ln(n-i)\\
+&= \ln ((n-1)!)\\
+&=\Omega(n\lg n)
+\end{align*}
+\]
+  <p><strong>Exercise 7.4-5</strong></p>
+  <p>We can improve the running time of quicksort in practice by taking advantage of the fast running time of insertion sort when its input is "nearly" sorted. Upon calling quicksort on a subarray with fewer than \(k\) elements, let it simply return without sorting the subarray. After the top-level call to quicksort returns, run insertion sort on the entire array to finish the sorting process. Argue that this sorting algorithm runs in \(O(nk+n\lg(n/k))\) expected time. How should we pick \(k\), both in theory and in practice?</p>
+  <p><strong>Exercise 7.4-6 &#9733;</strong></p>
+  <p>Consider modifying the \(\text{Partition}\) procedure by randomly picking three elements from array \(A\) and partitioning about their median (the middle value of the three elements). Approximate the probability of getting at worst an \(\alpha\)-to-\((1-\alpha)\) split, as a function of \(\alpha\) in the range \(0 \lt \alpha \lt 1\).</p>
+  <p><em>Answer:</em></p>
+\[
+2(\alpha^3+3\alpha^2(1-\alpha))=6\alpha^2-4\alpha^3
+\]
+  <h3>Problems</h3>
+  <p><strong>Problem 7-1 Hoare partition correctness</strong></p>
+  <p>The version of \(\text{Partition}\) given in this chapter is not the original partitioning algorithm. Here is the original partition algorithm, which is due to C. A. R. Hoare:</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Demonstrate the operation of \(\text{HoarePartition}\) on the array \(A=\langle13,19,9,5,12,8,7,4,11,2,6,21\rangle\), showing the values of the array and auxiliary values after each iteration of the \(\textbf{while}\) loop in lines 4&ndash;13.</li>
+  </ol>
+  <p>The next three questions ask you to give a careful argument that the procedure \(\text{HoarePartition}\) is correct. Assuming that the subarray \(A[p..r]\) contains at least two elements, prove the following:</p>
+  <ol style="list-style-type: lower-alpha;" start=2>
+    <li>The indices \(i\) and \(j\) are such that we never access an element of \(A\) outside the subarray \(A[p..r]\).</li>
+    <li>When \(\text{HoarePartition}\) terminates, it returns a value \(j\) such that \(p\le j\lt r\).</li>
+    <li>Every element of \(A[p..j]\) is less than or equal to every element of \(A[j+1..r]\) when \(\text{HoarePartition}\) terminates.</li>
+  </ol>
+  <p>The \(\text{Partition}\) procedure in Section 7.1 separates the pivot value (originally in \(A[r]\)) from the two partitions it forms. The \(\text{HoarePartition}\) procedure, on the other hand, always places the pivot value (originally in \(A[p]\)) into one of the two partitions \(A[p..j]\) and \(A[j+1..r]\). Since \(p \le j \lt r\), this split is always nontrivial.</p>
+  <ol style="list-style-type: lower-alpha;" start=5>
+    <li>Rewrite the \(\text{Quicksort}\) procedure to use \(\text{HoarePartition}\).</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a.</p>
+\[
+\begin{array}{l|l|ccccccccccccccccc}
+i=0&j=13&13 & 19 & 9 & 5 & 12 & 8 & 7 & 4 & 11 & 2 & 6 & 21\\
+i=1&j=11&6 & 19 & 9 & 5 & 12 & 8 & 7 & 4 & 11 & 2 & 13 & 21\\
+i=2&j=10&6 & 2 & 9 & 5 & 12 & 8 & 7 & 4 & 11 & 19 & 13 & 21\\
+i=10&j=9&6 & 2 & 9 & 5 & 12 & 8 & 7 & 4 & 11 & 19 & 13 & 21
+\end{array}
+\]
+  <p><strong>Problem 7-2 Quicksort with equal element values</strong></p>
+  <p>The analysis of the expected running time of randomized quicksort in Section 7.4.2 assumes that all element values are distinct. In this problem, we examine what happens when they are not.</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Suppose that all element values are equal. What would be randomized quicksort's running time in this case?</li>
+    <li>The \(\text{Partition}\) procedure returns an index \(q\) such that each element of \(A[p..q-1]\) is less than or equal to \(A[q]\) and each element of \(A[q+1..r]\) is greater than \(A[q]\). Modify the \(\text{Partition}\) procedure to produce a procedure \(\text{Partition}'(A,p,r)\), which permutes the elements of \(A[p..r]\) and returns two indices \(q\) and \(t\), where \(p\le q\le t\le r\), such that
+      <ul>
+        <li>all elements of \(A[q..t]\) are equal,</li>
+        <li>each element of \(A[p..q-1]\) is less than \(A[q]\) and</li>
+        <li>each element of \(A[t+1..r]\) is greater than \(A[q]\).</li>
+      </ul>
+      Like \(\text{Partition}\), your \(\text{Partition}'\) procedure should take \(\Theta(r-p)\) time.</li>
+    <li>Modify the \(\text{RandomizedQuicksort}\) procedure to call \(\text{Partition}'\), and name the new procedure \(\text{RandomizedQuicksort}'\). Then modify the \(\text{Quicksort}\) procedure to produce a procedure \(\text{Quicksort}'(p,r)\) that calls \(\text{RandomizedQuicksort}'\) and recurses only on partitions of elements not known to be equal to each other.</li>
+    <li>Using \(\text{Quicksort}'\), how would you adjust the analysis in Section 7.4.2 to avoid the assumption that all elements are distinct?</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a.</p>
+\[
+\Theta(n^2)
+\]
+  <p><strong>Problem 7-3 Alternative quicksort analysis</strong></p>
+  <p>An alternative analysis of the running time of randomized quicksort focuses on the expected running time of each individual recursive call to \(\text{RandomizedQuicksort}\), rather than on the number of comparisons performed.</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Argue that, given an array of size \(n\), the probability that any particular element is chosen as the pivot is \(1/n\). Use this to define indicator random variables \(X_i=\text I\{i\text{th smallest element is chosen as the pivot}\}\). What is \(\text E[X_i]\)?</li>
+    <li>Let \(T(n)\) be a random variable denoting the running time of quicksort on an array of size \(n\). Argue that<br>
+      \(\text E[T(n)]=\text E\left[\sum\limits_{q=1}^n X_q(T(q-1)+T(n-q)+\Theta(n))\right]\).</li>
+    <li>Show that we can rewrite equation (7.5) as<br>
+      \(\text E[T(n)]=\dfrac 2 n \sum\limits_{q=2}^{n-1}\text E[T(q)]+\Theta(n)\).</li>
+    <li>Show that<br>
+      \(\sum\limits_{k=2}^{n-1}k\lg k\le\dfrac12n^2\lg n-\dfrac18n^2\).<br>
+      (<em>Hint</em>: Split the summation into two parts, one for \(k=2,3,\dots,\lceil n/2\rceil- 1\) and one for \(k=\lceil n/2\rceil,\dots,n-1\).)</li>
+    <li>Using the bound from equation (7.7), show that the recurrence in equation (7.6) has the solution \(\text E[T(n)]=\Theta(n\lg n)\). (<em>Hint</em>: Show, by substitution, that \(\text E[T(n)]\le an \lg n\) for sufficiently large \(n\) and for some positive constant \(a\).)</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a.</p>
+\[
+\begin{align*}
+\text E[X_i] = \frac 1 n
+\end{align*}
+\]
+  <p>c.</p>
+\[
+\begin{align*}
+\text E[T(n)]
+&=\text E\left[\sum_{q=1}^n X_q(T(q-1)+T(n-q)+\Theta(n))\right]\\
+&=\text E[X_q]\cdot\text E\left[\sum_{q=1}^n (T(q-1)+T(n-q)+\Theta(n))\right]\\
+&=\frac 1n\text E\left[2\sum_{q=1}^n T(q-1)+n\Theta(n)\right]\\
+&=\frac 2n\text E\left[\sum_{q=1}^n T(q-1)\right]+\Theta(n)\\
+&=\dfrac 2 n \sum_{q=2}^{n-1}\text E[T(q)]+\Theta(n)
+\end{align*}
+\]
+  <p>d.</p>
+\[
+\begin{align*}
+\sum_{k=2}^{n-1}k\lg k
+&=\sum_{k=2}^{\lceil n/2\rceil- 1}k\lg k+\sum_{k=\lceil n/2\rceil}^{n-1}k\lg k\\
+&\le\sum_{k=2}^{\lceil n/2\rceil- 1}k\lg \frac n2+\sum_{k=\lceil n/2\rceil}^{n-1}k\lg n\\
+&=\lg n\sum_{k=2}^{\lceil n/2\rceil- 1}k-\sum_{k=2}^{\lceil n/2\rceil- 1}k+\lg n\sum_{k=\lceil n/2\rceil}^{n-1}k\\
+&=\lg n\sum_{k=2}^{n-1}k-\sum_{k=2}^{\lceil n/2\rceil- 1}k\\
+&\le\lg n\left(\frac{n^2}2-\frac n2 -1\right)-\left(\frac{n^2}8-\frac n4-1\right)\\
+&=\frac12n^2\lg n-\frac18n^2-\left(\frac 12n\lg n+\lg n-\frac n4-1\right)\\
+&\le\frac12n^2\lg n-\frac18n^2\\
+\end{align*}
+\]
+  <p>e.</p>
+\[
+\begin{align*}
+\text E[T(n)]
+&=\dfrac 2 n \sum_{q=2}^{n-1}\text E[T(q)]+\Theta(n)\\
+&\le\dfrac 2 n \sum_{q=2}^{n-1} aq\lg q+\Theta(n)\\
+&\le\dfrac {2a} n \left(\frac12n^2\lg n-\frac18n^2\right)+\Theta(n)\\
+&=an\lg n-\frac a4n+\Theta(n)\\
+&\le an\lg n
+\end{align*}
+\]
+  <p><strong>Problem 7-4 Stack depth for quicksort</strong></p>
+  <p>The \(\text{Quicksort}\) algorithm of Section 7.1 contains two recursive calls to itself. After \(\text{Quicksort}\) calls \(\text{Partition}\), it recursively sorts the left subarray and then it recursively sorts the right subarray. The second recursive call in \(\text{Quicksort}\) is not really necessary; we can avoid it by using an iterative control structure. This technique, called <strong><em>tail recursion</em></strong>, is provided automatically by good compilers. Consider the following version of quicksort, which simulates tail recursion:</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Argue that \(\text{TailRecursiveQuicksort}(A,1,A.length)\) correctly sorts the array \(A\).</li>
+  </ol>
+  <p>Compilers usually execute recursive procedures by using a <strong><em>stack</em></strong> that contains pertinent information, including the parameter values, for each recursive call. The information for the most recent call is at the top of the stack, and the information for the initial call is at the bottom. Upon calling a procedure, its information is <strong><em>pushed</em></strong> onto the stack; when it terminates, its information is <strong><em>popped</em></strong>. Since we assume that array parameters are represented by pointers, the information for each procedure call on the stack requires \(O(1)\) stack space. The <strong><em>stack depth</em></strong> is the maximum amount of stack space used at any time during a computation.</p>
+  <ol style="list-style-type: lower-alpha;" start=2>
+    <li>Describe a scenario in which \(\text{TailRecursiveQuicksort}\)'s stack depth is \(\Theta(n)\) on an \(n\)-element input array.</li>
+    <li>Modify the code for \(\text{TailRecursiveQuicksort}\) so that the worst-case stack depth is \(\Theta(\lg n)\). Maintain the \(O(n\lg n)\) expected running time of the algorithm.</li>
+  </ol>
+  <p><strong>Problem 7-5 Median-of-\(3\) partition</strong></p>
+  <p>One way to improve the \(\text{RandomizedQuicksort}\) procedure is to partition around a pivot that is chosen more carefully than by picking a random element from the subarray. One common approach is the <strong><em>median-of-\(3\)</em></strong> method: choose the pivot as the median (middle element) of a set of \(3\) elements randomly selected from the subarray. (See Exercise 7.4-6.) For this problem, let us assume that the elements in the input array \(A[1..n]\) are distinct and that \(n\ge 3\). We denote the sorted output array by \(A'[1..n]\). Using the median-of-\(3\) method to choose the pivot element \(x\), define \(p_i=\Pr\{x=A'[i]\}\).</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Give an exact formula for \(p_i\) as a function of \(n\) and \(i\) for \(i=2,3,\dots,n-1\). (Note that \(p_1=p_n=0\).)</li>
+    <li>By what amount have we increased the likelihood of choosing the pivot as \(x=A'[\lfloor(n+1)/2\rfloor]\), the median of \(A[1..n]\), compared with the ordinary implementation? Assume that \(n\to\infty\), and give the limiting ratio of these probabilities.</li>
+    <li>If we define a "good" split to mean choosing the pivot as \(x=A'[i]\), where \(n/3 \le i \le 2n/3\), by what amount have we increased the likelihood of getting a good split compared with the ordinary implementation? (<em>Hint</em>: Approximate the sum by an integral.)</li>
+    <li>Argue that in the \(\Omega(n\lg n)\) running time of quicksort, the median-of-\(3\) method affects only the constant factor.</li>
+  </ol>
+  <p><em>Answer:</em></p>
+  <p>a.</p>
+\[
+\begin{align*}
+p_i &= \frac {(i-1)(n-i)}{\begin{pmatrix}n\\3\end{pmatrix}}\\
+&=\frac {6(i-1)(n-i)}{n(n-1)(n-2)}
+\end{align*}
+\]
+  <p>b.</p>
+\[
+\begin{align*}
+\lim_{n\to\infty}\frac {6(\lfloor(n+1)/2\rfloor-1)(n-\lfloor(n+1)/2\rfloor)}{n(n-1)(n-2)}/\frac 1n=\frac32
+\end{align*}
+\]
+  <p>c.</p>
+\[
+\begin{align*}
+\lim_{n\to\infty}\sum_{i=n/3}^{2n/3}\frac {6(i-1)(n-i)}{n(n-1)(n-2)}/\frac 13
+&\approx \lim_{n\to\infty}3\int_{n/3}^{2n/3}\frac {6(x-1)(n-x)}{n(n-1)(n-2)}dx\\
+&=\lim_{n\to\infty}\frac{n(13n-27)}{9(n-2)(n-1)}\\
+&=\frac{13}9
+\end{align*}
+\]
+  <p><strong>Problem 7-6 Fuzzy sorting of intervals</strong></p>
+  <p>Consider a sorting problem in which we do not know the numbers exactly. Instead, for each number, we know an interval on the real line to which it belongs. That is, we are given \(n\) closed intervals of the form \([a_i,b_i]\), where \(a_i\le b_i\). We wish to <strong><em>fuzzy-sort</em></strong> these intervals, i.e., to produce a permutation \(\langle i_1,i_2,\dots,i_n\rangle\) of the intervals such that for \(j=1,2,\dots,n\), there exist \(c_j\in[a_{i_j},b_{i_j}]\) satisfying \(c_1\le c_2 \le \cdots \le c_n\).</p>
+  <ol style="list-style-type: lower-alpha;">
+    <li>Design a randomized algorithm for fuzzy-sorting \(n\) intervals. Your algorithm should have the general structure of an algorithm that quicksorts the left endpoints (the \(a_i\) values), but it should take advantage of overlapping intervals to improve the running time. (As the intervals overlap more and more, the problem of fuzzy-sorting the intervals becomes progressively easier. Your algorithm should take advantage of such overlapping, to the extent that it exists.)</li>
+    <li>Argue that your algorithm runs in expected time \(\Theta(n\lg n)\) in general, but runs in expected time \(\Theta(n)\) when all of the intervals overlap (i.e., when there exists a value \(x\) such that \(x\in[a_i,b_i]\) for all \(i\)). Your algorithm should not be checking for this case explicitly; rather, its performance should naturally improve as the amount of overlap increases.</li>
+  </ol>
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,341 @@
+
+    "def PriorityQueue(Heap):\n",
+    "\n",
+    "    def HeapMaximum(self):\n",
+    "        return self[0]\n",
+    "\n",
+    "    def HeapExtractMax(self):\n",
+    "        if self.heapSize < 1:\n",
+    "            raise IndexError('heap underflow')\n",
+    "        maxi = A[0]\n",
+    "        A[0] = A[A[0]]\n",
+    "        A[0] -= 1\n",
+    "        MaxHeapify(A, 1)\n",
+    "        return maxi\n",
+    "\n",
+    "    def HeapIncreaseKey(A, i, key):\n",
+    "        if key < A[i]:\n",
+    "            raise ValueError('new key is smaller than current key')\n",
+    "        A[i] = key\n",
+    "        while i > 1 and A[Parent(i)] < A[i]:\n",
+    "            A[i], A[Parent(i)] = A[Parent(i)], A[i]\n",
+    "            i = Parent(i)\n",
+    "\n",
+    "    def MaxHeapInsert(A, key):\n",
+    "        A[0] += 1\n",
+    "        try:\n",
+    "            A[A[0]] = -math.inf\n",
+    "        except IndexError:\n",
+    "            A.append(-math.inf)\n",
+    "        HeapIncreaseKey(A, A[0], key)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "****\n",
+    "\n",
+    "\n",
+
+   "source": [
+    "A = [12, 15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1]\n",
+    "HeapExtractMax(A)\n",
+    "A"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+
+
+
+
+
+    "****\n",
+    "\n",
+    "\n",
+    "\n",
+    "*Answer:*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def HeapMinimum(A):\n",
+    "    return A[1]\n",
+    "\n",
+    "def HeapExtractMin(A):\n",
+    "    if A[0] < 1:\n",
+    "        raise IndexError('heap underflow')\n",
+    "    mini = A[1]\n",
+    "    A[1] = A[A[0]]\n",
+    "    A[0] -= 1\n",
+    "    MinHeapify(A, 1)\n",
+    "    return mini\n",
+    "\n",
+    "def HeapDecreaseKey(A, i, key):\n",
+    "    if key > A[i]:\n",
+    "        raise ValueError('new key is larger than current key')\n",
+    "    while i > 1 and A[Parent(i)] > key:\n",
+    "        A[i] = A[Parent(i)]\n",
+    "        i = Parent(i)\n",
+    "    A[i] = key\n",
+    "\n",
+    "def MinHeapInsert(A, key):\n",
+    "    A[0] += 1\n",
+    "    try:\n",
+    "        A[A[0]] = math.inf\n",
+    "    except IndexError:\n",
+    "        A.append(math.inf)\n",
+    "    HeapDecreaseKey(A, A[0], key)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise 6.5-4**\n",
+    "\n",
+    "Why do we bother setting the key of the inserted node to $-\\infty$ in line 2 of $\\text{MaxHeapInsert}$ when the next thing we do is increase its key to the desired value?\n",
+    "\n",
+    "**Exercise 6.5-5**\n",
+    "\n",
+    "Argue the correctness of $\\text{HeapIncreaseKey}$ using the following loop invariant:\n",
+    "\n",
+    "> At the start of each iteration of the $\\textbf{while}$ loop of lines 4–6, the subarray $A[1\\dots A.heap\\text-size]$ satisfies the max-heap property, except that there may be one violation: $A[i]$ may be larger than $A[\\text{Parent}(i)]$.\n",
+    "\n",
+    "You may assume that the subarray $A[1\\dots A.heap\\text-size]$ satisfies the max-heap property at the time $\\text{HeapIncreaseKey}$ is called.\n",
+    "\n",
+    "**Exercise 6.5-6**\n",
+    "\n",
+    "Each exchange operation on line 5 of $\\text{HeapIncreaseKey}$ typically requires three assignments. Show how to use the idea of the inner loop of $\\text{InsertionSort}$ to reduce the three assignments down to just one assignment.\n",
+    "\n",
+    "*Answer:*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def HeapIncreaseKey(A, i, key):\n",
+    "    if key < A[i]:\n",
+    "        raise ValueError('new key is smaller than current key')\n",
+    "    while i > 1 and A[Parent(i)] < key:\n",
+    "        A[i] = A[Parent(i)]\n",
+    "        i = Parent(i)\n",
+    "    A[i] = key"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise 6.5-7**\n",
+    "\n",
+    "Show how to implement a first-in, first-out queue with a priority queue. Show how to implement a stack with a priority queue. (Queues and stacks are defined in Section 10.1.)\n",
+    "\n",
+    "**Exercise 6.5-8**\n",
+    "\n",
+    "The operation $\\text{HeapDelete}(A,i)$ deletes the item in node $i$ from heap $A$. Give an implementation of $\\text{HeapDelete}$ that runs in $O(\\lg n)$ time for an $n$-element max-heap.\n",
+    "\n",
+    "*Answer:*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def HeapDelete(A, i):\n",
+    "    HeapIncreaseKey(A, i, math.inf)\n",
+    "    HeapExtractMax(A)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise 6.5-9**\n",
+    "\n",
+    "Give an $O(n\\lg k)$-time algorithm to merge $k$ sorted lists into one sorted list, where $n$ is the total number of elements in all the input lists. (*Hint*: Use a minheap for $k$-way merging.)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def MergeSortedLists(lists):\n",
+    "\n",
+    "    class Key:\n",
+    "        def __init__(self, element, index):\n",
+    "            self.element = element\n",
+    "            self.index = index\n",
+    "\n",
+    "        def __lt__(self, o):\n",
+    "            if isinstance(o, Key):\n",
+    "                return self.element < o.element\n",
+    "            return self.element < o\n",
+    "\n",
+    "        def __gt__(self, o):\n",
+    "            return o < self.element\n",
+    "\n",
+    "    A = [0]\n",
+    "    for i, lst in enumerate(lists):\n",
+    "        MinHeapInsert(A, Key(lst[0], i))\n",
+    "    pos = [1] * len(lists)\n",
+    "    res = []\n",
+    "    while A[0] > 0:\n",
+    "        key = HeapExtractMin(A)\n",
+    "        res.append(key.element)\n",
+    "        try:\n",
+    "            MinHeapInsert(A, Key(lists[key.index][pos[key.index]], key.index))\n",
+    "            pos[key.index] += 1\n",
+    "        except IndexError:\n",
+    "            pass\n",
+    "    return res"
+   ]
+  },
+  {
+
+
+
+
+
+
+
+    "def BuildMaxHeap_(A):\n",
+    "    A[0] = 1\n",
+    "    for i in range(2, len(A)):\n",
+    "        MaxHeapInsert(A, A[i])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<ol style=\"list-style-type: lower-alpha;\">\n",
+    "<li>Do the procedures $\\text{BuildMaxHeap}$ and $\\text{BuildMaxHeap}'$ always create the same heap when run on the same input array? Prove that they do, or provide a counterexample.</li>\n",
+    "<li>Show that in the worst case, $\\text{BuildMaxHeap}'$ requires $\\Theta(n\\lg n)$ time to build an $n$-element heap.</li>\n",
+    "</ol>\n",
+    "\n",
+    "*Answer:*\n",
+    "\n",
+    "a. No\n",
+
+
+
+
+
+
+
+
+    "****\n",
+    "\n",
+    "A ***$d$-ary heap*** is like a binary heap, but (with one possible exception) non-leaf nodes have $d$ children instead of $2$ children.\n",
+    "\n",
+    "<ol style=\"list-style-type: lower-alpha;\">\n",
+    "<li>How would you represent a $d$-ary heap in an array?</li>\n",
+    "<li>What is the height of a $d$-ary heap of $n$ elements in terms of $n$ and $d$?</li>\n",
+    "<li>Give an efficient implementation of $\\text{ExtractMax}$ in a $d$-ary max-heap. Analyze its running time in terms of $d$ and $n$.</li>\n",
+    "<li>Give an efficient implementation of $\\text{Insert}$ in a $d$-ary max-heap. Analyze its running time in terms of $d$ and $n$.</li>\n",
+    "<li>Give an efficient implementation of $\\text{IncreaseKey}(A,i,k)$, which flags an error if $k\\lt A[i]$, but otherwise sets $A[i]=k$ and then updates the $d$-ary maxheap structure appropriately. Analyze its running time in terms of $d$ and $n$.</li>\n",
+    "</ol>\n",
+    "\n",
+    "*Answer:*\n",
+    "\n",
+    "b. $\\Theta(\\log_d n)$\n",
+    "\n",
+    "c. $\\Theta(d\\log_d n)$\n",
+    "\n",
+    "d. $\\Theta(\\log_d n)$\n",
+    "\n",
+    "e. $\\Theta(\\log_d n)$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class DaryHeap:\n",
+    "    __A = [0]\n",
+    "\n",
+    "    def __init__(self, d):\n",
+    "        self.__d = d\n",
+    "\n",
+    "    def __getitem__(self, index):\n",
+    "        if index < 1:\n",
+    "            raise IndexError\n",
+    "        return self.__A[index]\n",
+    "\n",
+    "    def __setitem__(self, index, val):\n",
+    "        self.__A[index] = val\n",
+    "\n",
+    "    def __len__(self):\n",
+    "        return self.__A[0]\n",
+    "\n",
+    "    def __str__(self):\n",
+    "        return str(self.__A[1:])\n",
+    "\n",
+    "    __repr__ = __str__\n",
+    "\n",
+    "    def __Parent(self, i):\n",
+    "        return (i + self.__d - 2) // self.__d\n",
+    "\n",
+    "    def __Children(self, i):\n",
+    "        start = i * self.__d - self.__d + 2\n",
+    "        return list(range(start, start + self.__d))\n",
+    "\n",
+    "    def ExtractMax(self):\n",
+    "        if len(self) < 1:\n",
+    "            raise IndexError('heap underflow')\n",
+    "        maxi = self[1]\n",
+    "        self[1] = self[len(self)]\n",
+    "        self.__A[0] -= 1\n",
+    "        self.Heapify(1)\n",
+    "        return maxi\n",
+    "\n",
+    "    def Heapify(self, i):\n",
+    "        while True:\n",
+    "            largest = i\n",
+    "            largest_val = self[i]\n",
+    "            for k in self.__Children(i):\n",
+    "                if k > len(self):\n",
+    "                    break\n",
+    "                if self[k] > largest_val:\n",
+    "                    largest = k\n",
+    "                    largest_val = self[k]\n",
+    "            if largest == i:\n",
+    "                return\n",
+    "            self[i], self[largest] = self[largest], self[i]\n",
+    "            i = largest\n",
+    "\n",
+    "    def Insert(self, key):\n",
+    "        self.__A[0] += 1\n",
+    "        try:\n",
+    "            self[len(self)] = -math.inf\n",
+    "        except IndexError:\n",
+    "            self.__A.append(-math.inf)\n",
+    "        self.IncreaseKey(len(self), key)\n",
+    "\n",
+    "    def IncreaseKey(self, i, key):\n",
+    "        if key < self[i]:\n",
+    "            raise ValueError('new key is smaller than current key')\n",
+    "        while i > 1 and self[self.__Parent(i)] < key:\n",
+    "            self[i] = self[self.__Parent(i)]\n",
+    "            i = self.__Parent(i)\n",
+    "        self[i] = key"
+   ]
+  },
+
